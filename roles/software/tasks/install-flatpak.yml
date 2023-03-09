@@ -1,0 +1,8 @@
+- name: Print
+  ansible.builtin.debug:
+    msg: "Flatpak Install {{ item }}"
+
+- name: Install
+  ansible.builtin.flatpak:
+    name: "{{ item }}"
+    state: present

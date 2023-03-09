@@ -1,0 +1,35 @@
+# Update
+- name: DNF update
+  ansible.builtin.packagege:
+    name: "*"
+    state: latest
+  become: true
+
+- name: Flatpak update
+  ansible.builtin.shell:
+    cmd: flatpak update --noninteractive --assumeyes
+  become: true
+
+# Remove
+- name: Include remove
+  ansible.builtin.include_tasks:
+    file: remove.yml
+  with_items:
+    - cheese
+    - gnome-boxes
+    - gnome-calendar
+    - gnome-clocks
+    - gnome-connections
+    - gnome-contacts
+    - gnome-help
+    - gnome-maps
+    - gnome-photos
+#    - gnome-terminal
+    - gnome-text-editor
+    - gnome-tour
+    - gnome-weather
+    - mediawriter
+    - mediawriter
+    - rythmbox
+    - totem
+  become: true

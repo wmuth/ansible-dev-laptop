@@ -1,0 +1,46 @@
+- name: Install utils
+  ansible.builtin.include_tasks:
+    file: install.yml
+  with_items:
+    - alacritty
+    - bat
+    - neovim
+    - ripgrep
+    - tealdeer
+    - tmux
+    - yt-dlp
+    - zoxide
+    - zsh
+  become: true
+
+- name: Install package development
+  ansible.builtin.include_tasks:
+    file: install.yml
+  with_items:
+    - TODO
+  become: true
+
+- name: Install custom development
+  ansible.builtin.include_tasks:
+    file: dev-custom.yml
+
+- name: Install general software
+  ansible.builtin.include_tasks:
+    file: install.yml
+  with_items:
+    - chromium
+    - eog
+    - firefox
+    - keepassxc
+    - libreoffice
+    - texmaker
+  become: true
+
+- name: Install software, flatpak
+  ansible.builtin.include_tasks:
+    file: install-flatpak.yml
+  with_items:
+    - com.bitwarden.desktop
+    - com.brave.Browser
+    - io.github.celluloid_player.celluloid
+  become: true

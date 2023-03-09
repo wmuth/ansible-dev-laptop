@@ -1,0 +1,13 @@
+- name: DNF autoremove
+  ansible.builtin.dnf:
+    autoremove: true
+
+- name: Flatpak autoremove
+  ansible.builtin.shell:
+    cmd: flatpak remove --unused --noninteractive --assumeyes
+
+# Conditionally reboot
+- name: Reboot
+  ansible.builtin.reboot:
+    reboot_timeout: 10
+  when: reboot

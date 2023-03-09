@@ -1,0 +1,7 @@
+# Run all roles on all hosts
+- hosts: all
+  roles:
+    - base
+    - software
+    - config
+    - cleanup
