@@ -3,7 +3,6 @@
     file: install.yml
   with_items:
     - alacritty
-    - bat
     - neovim
     - ripgrep
     - tealdeer
@@ -17,7 +16,7 @@
   ansible.builtin.include_tasks:
     file: install.yml
   with_items:
-    - TODO
+    - python
   become: true
 
 - name: Install custom development
