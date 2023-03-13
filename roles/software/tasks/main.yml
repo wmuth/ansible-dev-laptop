@@ -2,13 +2,9 @@
   ansible.builtin.include_tasks:
     file: install.yml
   with_items:
-    - alacritty
+    - fzf
     - neovim
-    - ripgrep
-    - tealdeer
-    - tmux
     - yt-dlp
-    - zoxide
     - zsh
   become: true
 
@@ -28,10 +24,7 @@
     file: install.yml
   with_items:
     - chromium
-    - eog
-    - firefox
     - keepassxc
-    - libreoffice
     - texmaker
   become: true
 
@@ -42,4 +35,17 @@
     - com.bitwarden.desktop
     - com.brave.Browser
     - io.github.celluloid_player.celluloid
+  become: true
+
+- name: Install software, cargo
+  ansible.builtin.include_tasks:
+    file: install-cargo.yml
+  with_items:
+    - alacritty
+    - broot
+    - exa
+    - fd-find
+    - ripgrep
+    - tealdeer
+    - zoxide
   become: true

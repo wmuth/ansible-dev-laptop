@@ -1,0 +1,7 @@
+- name: Print
+  ansible.builtin.debug:
+    msg: "Cargo install {{ item }}"
+
+- name: Install
+  ansible.builtin.shell:
+    cmd: "cargo install {{ item }} --locked"

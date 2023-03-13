@@ -24,7 +24,7 @@
     - gnome-help
     - gnome-maps
     - gnome-photos
-#    - gnome-terminal
+    - gnome-terminal
     - gnome-text-editor
     - gnome-tour
     - gnome-weather
