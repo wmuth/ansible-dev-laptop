@@ -11,9 +11,8 @@
   become: true
 
 - name: Flatpak update
-  ansible.builtin.flatpak:
-    name: '*'
-    state: latest
+  ansible.builtin.shell:
+    cmd: flatpak update --noninteractive --assumeyes
   become: true
 
 # Remove to get to more basic state
