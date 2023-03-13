@@ -1,8 +1,0 @@
-- name: Print
-  ansible.builtin.debug:
-    msg: "Remove {{ item }}"
-
-- name: Remove
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: absent

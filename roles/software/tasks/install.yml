@@ -1,8 +1,0 @@
-- name: Print
-  ansible.builtin.debug:
-    msg: "Install {{ item }}"
-
-- name: Install
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present

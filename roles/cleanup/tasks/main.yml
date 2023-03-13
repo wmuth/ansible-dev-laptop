@@ -1,6 +1,7 @@
 - name: DNF autoremove
   ansible.builtin.dnf:
     autoremove: true
+  become: true
 
 - name: Flatpak autoremove
   ansible.builtin.shell:
@@ -8,6 +9,7 @@
 
 # Conditionally reboot
 - name: Reboot
-  ansible.builtin.reboot:
-    reboot_timeout: 10
-  when: reboot
+  ansible.builtin.shell:
+    cmd: reboot
+  when: (reboot is defined) and (reboot|bool == true)
+  become: true

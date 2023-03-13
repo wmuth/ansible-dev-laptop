@@ -1,43 +1,39 @@
-- name: Install utils
-  ansible.builtin.include_tasks:
-    file: install.yml
-  with_items:
-    - fzf
-    - neovim
-    - yt-dlp
-    - zsh
+# Utils
+- name: Util install
+  ansible.builtin.package:
+    name:
+      - fzf
+      - neovim
+      - yt-dlp
+      - zsh
+    state: present
   become: true
 
-- name: Install package development
+- name: Install groups
   ansible.builtin.include_tasks:
-    file: install.yml
+    file: install-group.yml
   with_items:
-    - python
+    - "'C Development Tools and Libraries'"
+    - "'Development Libraries'"
+    - "'Development Tools'"
+    - "'Virtualization'"
+
+# Development
+- name: DNF dev install
+  ansible.builtin.package:
+    name:
+      - freetype-devel
+      - fontconfig-devel
+      - libxcb-devel
+      - libxkbcommon-devel
+    state: present
   become: true
 
 - name: Install custom development
   ansible.builtin.include_tasks:
     file: dev-custom.yml
 
-- name: Install general software
-  ansible.builtin.include_tasks:
-    file: install.yml
-  with_items:
-    - chromium
-    - keepassxc
-    - texmaker
-  become: true
-
-- name: Install software, flatpak
-  ansible.builtin.include_tasks:
-    file: install-flatpak.yml
-  with_items:
-    - com.bitwarden.desktop
-    - com.brave.Browser
-    - io.github.celluloid_player.celluloid
-  become: true
-
-- name: Install software, cargo
+- name: Cargo install
   ansible.builtin.include_tasks:
     file: install-cargo.yml
   with_items:
@@ -48,4 +44,20 @@
     - ripgrep
     - tealdeer
     - zoxide
+
+# General programs
+- name: General install
+  ansible.builtin.package:
+    name:
+      - celluloid
+      - chromium
+      - keepassxc
+      - texmaker
+  become: true
+
+- name: Flatpak install
+  ansible.builtin.flatpak:
+    name:
+      - com.bitwarden.desktop
+    state: present
   become: true

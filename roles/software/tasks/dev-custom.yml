@@ -1,14 +1,12 @@
 - name: Get rustup
   ansible.builtin.get_url:
     dest: /tmp/sh.rustup.rs
-    force: 'yes'
     mode: '0755'
     url: https://sh.rustup.rs
 
 - name: Install rustup
   ansible.builtin.shell:
     cmd: /tmp/sh.rustup.rs -y
-  become: true
 
 - name: Remove rustup script
   ansible.builtin.file:
