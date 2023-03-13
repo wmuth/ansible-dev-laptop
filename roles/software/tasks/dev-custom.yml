@@ -1,4 +1,4 @@
-- name: Get rustup
+- name: Get rustup script
   ansible.builtin.get_url:
     dest: /tmp/sh.rustup.rs
     mode: '0755'
