@@ -1,6 +1,19 @@
-- name: Bluetooth no AutoEnable
-  ansible.builtin.lineinfile:
-    line: AutoEnable=false
-    path: /etc/bluetooth/main.conf
-    regex: \#AutoEnable=true
-  become: true
+- name: Configure font
+  ansible.builtin.include_tasks:
+    file: font.yml
+
+- name: Configure shell
+  ansible.builtin.include_tasks:
+    file: shell.yml
+
+- name: Configure input
+  ansible.builtin.include_tasks:
+    file: input.yml
+
+- name: Configure UI
+  ansible.builtin.include_tasks:
+    file: ui.yml
+
+- name: Configure hardware
+  ansible.builtin.include_tasks:
+    file: hardware.yml

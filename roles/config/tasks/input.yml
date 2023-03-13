@@ -1,0 +1,59 @@
+- name: Speed up key repeat delay and speed
+  ansible.builtin.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/desktop/peripherals/keyboard/delay", value: "uint32 300" }
+    - { key: "/org/gnome/desktop/peripherals/keyboard/repeat-interval", value: "uint32 20" }
+
+- name: Create keybinding locations
+  ansible.builtin.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+
+- name: Nautilus hotkey
+  ansible.builtin.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding", value: "'<Super>e'" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'/usr/bin/nautilus'" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name", value: "'Nautilus'" }
+
+- name: Terminator hotkey
+  ansible.builtin.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding", value: "'<Primary><Alt>t'" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command", value: "'~/.cargo/bin/alacritty'" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name", value: "'Alacritty'" }
+
+- name: Printscreen hotkeys
+  ansible.builtin.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/area-screenshot", value: "['<Shift>Print']" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/area-screenshot-clip", value: "['Print']" }
+
+- name: Caps becomes ctrl
+  ansible.builtin.dconf:
+    key: "/org/gnome/desktop/input-sources/xkb-options"
+    value: "['lv3:ralt_switch', 'caps:ctrl_modifier']"
+
+- name: Maximize hoykey
+  ansible.builtin.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/maximize"
+    value: "['<Super>Up']"
+
+- name: Fix alt-tabbing
+  ansible.builtin.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/desktop/wm/keybindings/switch-windows", value: "['<Alt>Tab']" }
+    - { key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward", value: "['<Shift><Alt>Tab']" }
+    - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['<Super>Tab']"}
+    - { key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward", value: "['<Shift><Super>Tab']"}
+    - { key: "/org/gnome/shell/window-switcher/current-workspace-only", value: "false" }

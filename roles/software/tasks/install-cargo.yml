@@ -1,3 +1,0 @@
-- name: Cargo install {{ item }}
-  ansible.builtin.shell:
-    cmd: "~/.cargo/bin/cargo install {{ item }} --locked"

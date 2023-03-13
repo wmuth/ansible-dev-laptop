@@ -1,0 +1,31 @@
+- name: Download FiraMono nerd font
+  ansible.builtin.get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/FiraMono.zip
+    dest: /tmp/firamono.zip
+    mode: '0644'
+
+- name: Unzip font
+  ansible.builtin.unarchive:
+    src: /tmp/firamono.zip
+    dest: /usr/local/share/fonts/firamono
+
+- name: Font remove extra files - {{ item }}
+  ansible.builtin.file:
+    path: "/usr/local/share/fonts/firamono/{{ item }}"
+    state: absent
+  with_items:
+    - LICENSE.txt
+    - readme.md
+
+- name: Refresh font cache
+  ansible.builtin.shell:
+    cmd: fc-cache -fv
+
+- name: Set Fira Font
+  ansible.builtin.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/desktop/interface/font-name", value: "'Fira Code 10'" }
+    - { key: "/org/gnome/desktop/interface/document-font-name", value: "'Fira Code 11'" }
+    - { key: "/org/gnome/desktop/interface/monospace-font-name", value: "'Fira Code 11'" }

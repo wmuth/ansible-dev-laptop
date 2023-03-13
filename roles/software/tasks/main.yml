@@ -2,28 +2,32 @@
 - name: Util install
   ansible.builtin.package:
     name:
+      - deja-dup
       - fzf
+      - gnome-tweaks
       - neovim
-      - yt-dlp
       - zsh
     state: present
   become: true
 
-- name: Install groups
-  ansible.builtin.include_tasks:
-    file: install-group.yml
+- name: Group install {{ item }}
+  ansible.builtin.shell:
+    cmd: dnf group install --with-optional {{ item }} -y
   with_items:
     - "'C Development Tools and Libraries'"
     - "'Development Libraries'"
-    - "'Development Tools'"
     - "'Virtualization'"
+  become: true
 
 # Development
 - name: DNF dev install
   ansible.builtin.package:
     name:
-      - freetype-devel
       - fontconfig-devel
+      - freetype-devel
+      - golang
+      - java-devel
+      - java-openjdk
       - libxcb-devel
       - libxkbcommon-devel
     state: present
@@ -33,9 +37,10 @@
   ansible.builtin.include_tasks:
     file: dev-custom.yml
 
-- name: Cargo install
-  ansible.builtin.include_tasks:
-    file: install-cargo.yml
+# Language managers
+- name: Cargo install {{ item }}
+  ansible.builtin.shell:
+    cmd: "~/.cargo/bin/cargo install {{ item }} --locked"
   with_items:
     - alacritty
     - broot
@@ -45,6 +50,12 @@
     - tealdeer
     - zoxide
 
+- name: Pip install {{ item }}
+  ansible.builtin.shell:
+    cmd: "pip install -U {{ item }}"
+  with_items:
+    - neovim
+
 # General programs
 - name: General install
   ansible.builtin.package:
@@ -52,7 +63,9 @@
       - celluloid
       - chromium
       - keepassxc
+      - libreoffice
       - texmaker
+      - yt-dlp
   become: true
 
 - name: Flatpak install
@@ -61,3 +74,7 @@
       - com.bitwarden.desktop
     state: present
   become: true
+
+- name: Install custom general
+  ansible.builtin.include_tasks:
+    file: gen-custom.yml

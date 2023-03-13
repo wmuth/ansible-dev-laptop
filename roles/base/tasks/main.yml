@@ -34,7 +34,8 @@
       - gnome-weather
       - mediawriter
       - mediawriter
-      - rythmbox
+      - rhythmbox
       - totem
+      - yelp
     state: absent
   become: true

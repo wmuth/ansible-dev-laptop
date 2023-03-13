@@ -1,4 +1,0 @@
-- name: Group install {{ item }}
-  ansible.builtin.shell:
-    cmd: dnf group install --with-optional {{ item }} -y
-  become: true
