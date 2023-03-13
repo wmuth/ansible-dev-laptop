@@ -11,5 +11,5 @@
 - name: Reboot
   ansible.builtin.shell:
     cmd: reboot
-  when: (reboot is defined) and (reboot)
+  when: (reboot is defined) and (reboot|bool == true)
   become: true
