@@ -10,7 +10,7 @@
     state: present
   become: true
 
-- name: Group install {{ item }}
+- name: Group install
   ansible.builtin.shell:
     cmd: dnf group install --with-optional {{ item }} -y
   with_items:
@@ -38,7 +38,7 @@
     file: dev-custom.yml
 
 # Language managers
-- name: Cargo install {{ item }}
+- name: Cargo install
   ansible.builtin.shell:
     cmd: "~/.cargo/bin/cargo install {{ item }} --locked"
   with_items:
@@ -50,11 +50,12 @@
     - tealdeer
     - zoxide
 
-- name: Pip install {{ item }}
+- name: Pip install
   ansible.builtin.shell:
     cmd: "pip install -U {{ item }}"
   with_items:
     - neovim
+    - psutil
 
 # General programs
 - name: General install

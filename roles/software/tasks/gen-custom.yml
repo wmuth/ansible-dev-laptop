@@ -1,44 +1,37 @@
 - name: Download calibre script
   ansible.builtin.get_url:
-    url: https://download.calibre-ebook.com/linux-installer.sh
     dest: /tmp/calibre.sh
     mode: '0755'
+    url: https://download.calibre-ebook.com/linux-installer.sh
+  register: down_calibre
+  when: (calibre is defined) and (calibre|bool == true)
 
 - name: Install calibre
   ansible.builtin.shell:
     cmd: /tmp/calibre.sh
+  when: down_calibre
 
 - name: Delete calibre script
   ansible.builtin.file:
     path: /tmp/calibre.sh
     state: absent
+  when: down_calibre
 
 - name: Get codium.rpm
   ansible.builtin.shell:
     cmd: curl https://api.github.com/repos/VSCodium/vscodium/releases/latest | grep -iE '"browser_download_url\":.*x86_64.rpm"' | awk '{print $2}' | sed s/\"//g | xargs wget -O /tmp/codium.rpm
+  register: down_codium
+  when: (codium is defined) and (codium|bool == true)
 
 - name: Install codium.rpm
   ansible.builtin.dnf:
     name: /tmp/codium.rpm
     state: present
   become: true
+  when: down_codium
 
 - name: Remove codium.rpm
   ansible.builtin.file:
     path: /tmp/codium.rmp
     state: absent
-
-- name: Get brave.rpm
-  ansible.builtin.shell:
-    cmd: curl https://api.github.com/repos/brave/brave-browser/releases/latest | grep -iE '"browser_download_url\":.*x86_64.rpm"' | awk '{print $2}' | sed s/\"//g | xargs wget -O /tmp/brave.rpm
-
-- name: Install brave.rpm
-  ansible.builtin.dnf:
-    name: /tmp/brave.rpm
-    state: present
-  become: true
-
-- name: Remove brave.rpm
-  ansible.builtin.file:
-    path: /tmp/brave.rmp
-    state: absent
+  when: down_codium
