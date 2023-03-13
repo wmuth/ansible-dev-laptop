@@ -13,6 +13,7 @@ I have now been broken up into several smaller repos, of course including this o
 1. Manually install latest fedora workstation
 1. Manuallt install latest ansible
 1. Clone this repository
-1. `ansible-playbook --ask-become-pass run.yml --extra-vars "reboot=true"`
+1. Change vars in host_vars/localhost
+1. `ansible-playbook --ask-become-pass run.yml`
 
 Omit extra vars if you don't want to reboot at the end of the process.
