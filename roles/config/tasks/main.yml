@@ -17,3 +17,21 @@
 - name: Configure UI
   ansible.builtin.include_tasks:
     file: ui.yml
+
+- name: Clone dotfiles
+  ansible.builtin.git:
+    repo: https://github.com/wmuth/dotfiles.git
+    dest: ~/dotfiles
+  register: down_dot
+  when: dotfiles
+
+- name: Import dotfiles
+  ansible.builtin.shell:
+    cmd: ~/dotfiles/install-em.sh
+  when: down_dot is not skipped
+
+- name: Delete dotfiles dir
+  ansible.builtin.file:
+    path: ~/dotfiles
+    state: absent
+  when: down_dot is not skipped

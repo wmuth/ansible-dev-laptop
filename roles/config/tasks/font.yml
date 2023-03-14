@@ -9,33 +9,38 @@
 - name: Make fonts dir
   ansible.builtin.file:
     mode: '0755'
-    path: /usr/local/share/fonts
+    path: /usr/share/fonts
     state: directory
   become: true
 
 - name: Make firamono dir
   ansible.builtin.file:
     mode: '0755'
-    path: /usr/local/share/fonts/firamono
+    path: /usr/share/fonts/firamono
     state: directory
   become: true
 
 - name: Unzip font
   ansible.builtin.unarchive:
-    dest: /usr/local/share/fonts/firamono
+    dest: /usr/share/fonts/firamono
     src: /tmp/firamono.zip
   become: true
   when: down_font is not skipped
 
 - name: Font remove extra files
   ansible.builtin.file:
-    path: "/usr/local/share/fonts/firamono/{{ item }}"
+    path: "/usr/share/fonts/firamono/{{ item }}"
     state: absent
   with_items:
     - LICENSE.txt
     - readme.md
   become: true
   when: down_font is not skipped
+
+- name: Delete font zip
+  ansible.builtin.file:
+    path: /tmp/firamono.zip
+    state: absent
 
 - name: Refresh font cache
   ansible.builtin.shell:
@@ -47,6 +52,6 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
-    - { key: "/org/gnome/desktop/interface/document-font-name", value: "'Fira Code 11'" }
-    - { key: "/org/gnome/desktop/interface/font-name", value: "'Fira Code 10'" }
-    - { key: "/org/gnome/desktop/interface/monospace-font-name", value: "'Fira Code 11'" }
+    - { key: "/org/gnome/desktop/interface/document-font-name", value: "'FuraMono Nerd Font 11'" }
+    - { key: "/org/gnome/desktop/interface/font-name", value: "'FuraMono Nerd Font 10'" }
+    - { key: "/org/gnome/desktop/interface/monospace-font-name", value: "'FuraMono Nerd Font 11'" }

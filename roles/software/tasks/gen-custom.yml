@@ -10,28 +10,10 @@
   ansible.builtin.shell:
     cmd: /tmp/calibre.sh
   when: down_calibre is not skipped
+  become: true
 
 - name: Delete calibre script
   ansible.builtin.file:
     path: /tmp/calibre.sh
     state: absent
   when: down_calibre is not skipped
-
-- name: Get codium.rpm
-  ansible.builtin.shell:
-    cmd: curl https://api.github.com/repos/VSCodium/vscodium/releases/latest | grep -iE '"browser_download_url\":.*x86_64.rpm"' | awk '{print $2}' | sed s/\"//g | xargs wget -O /tmp/codium.rpm
-  register: down_codium
-  when: codium
-
-- name: Install codium.rpm
-  ansible.builtin.dnf:
-    name: /tmp/codium.rpm
-    state: present
-  become: true
-  when: down_codium is not skipped
-
-- name: Remove codium.rpm
-  ansible.builtin.file:
-    path: /tmp/codium.rmp
-    state: absent
-  when: down_codium is not skipped

@@ -1,5 +1,6 @@
 ---
 calibre: false
 codium: false
+dotfiles: false
 font: false
 reboot: false
