@@ -46,6 +46,7 @@
     - broot
     - exa
     - fd-find
+    - git-delta
     - ripgrep
     - tealdeer
     - zoxide
