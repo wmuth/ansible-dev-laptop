@@ -4,6 +4,10 @@
     line: max_parallel_downloads=10
   become: true
 
+- name: Enable flathub
+  ansible.builtin.shell:
+    cmd: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 - name: DNF update
   ansible.builtin.package:
     name: "*"

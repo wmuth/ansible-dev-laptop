@@ -73,6 +73,7 @@
   ansible.builtin.flatpak:
     name:
       - com.bitwarden.desktop
+      - com.brave.Browser
     state: present
   become: true
 
