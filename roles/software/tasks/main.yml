@@ -58,6 +58,13 @@
     - neovim
     - psutil
 
+- name: Go install
+  ansible.builtin.shell:
+    cmd: "go install {{ item }}"
+  with_items:
+    - github.com/jesseduffield/lazygit@latest
+
+
 # General programs
 - name: General install
   ansible.builtin.package:
