@@ -7,8 +7,6 @@
       - gnome-tweaks
       - neovim
       - zsh
-      - zsh-autosuggestions
-      - zsh-syntax-highlighting
     state: latest
   become: true
 
