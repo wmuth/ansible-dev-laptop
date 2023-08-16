@@ -52,6 +52,6 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
-    - { key: "/org/gnome/desktop/interface/document-font-name", value: "'FuraMono Nerd Font 11'" }
+    - { key: "/org/gnome/desktop/interface/document-font-name", value: "'FuraMono Nerd Font 10'" }
     - { key: "/org/gnome/desktop/interface/font-name", value: "'FuraMono Nerd Font 10'" }
-    - { key: "/org/gnome/desktop/interface/monospace-font-name", value: "'FuraMono Nerd Font 11'" }
+    - { key: "/org/gnome/desktop/interface/monospace-font-name", value: "'FuraMono Nerd Font 10'" }

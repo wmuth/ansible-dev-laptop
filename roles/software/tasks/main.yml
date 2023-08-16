@@ -7,7 +7,7 @@
       - gnome-tweaks
       - neovim
       - zsh
-    state: present
+    state: latest
   become: true
 
 - name: Group install
@@ -25,12 +25,9 @@
     name:
       - fontconfig-devel
       - freetype-devel
-      - golang
-      - java-devel
-      - java-openjdk
       - libxcb-devel
       - libxkbcommon-devel
-    state: present
+    state: latest
   become: true
 
 - name: Install custom development
@@ -43,12 +40,10 @@
     cmd: "~/.cargo/bin/cargo install {{ item }} --locked"
   with_items:
     - alacritty
-    - broot
     - exa
-    - fd-find
-    - git-delta
     - ripgrep
     - tealdeer
+    - zellij
     - zoxide
 
 - name: Pip install
@@ -64,7 +59,6 @@
   with_items:
     - github.com/jesseduffield/lazygit@latest
 
-
 # General programs
 - name: General install
   ansible.builtin.package:
@@ -74,14 +68,18 @@
       - keepassxc
       - libreoffice
       - texmaker
+      - tor
       - yt-dlp
+    state: latest
   become: true
 
 - name: Flatpak install
   ansible.builtin.flatpak:
     name:
       - com.bitwarden.desktop
-      - com.brave.Browser
+      - com.obsproject.Studio
+      - net.mullvad.MullvadBrowser
+      - org.gimp.GIMP
     state: present
   become: true
 

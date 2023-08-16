@@ -13,3 +13,10 @@
     cmd: reboot
   when: reboot
   become: true
+
+# Conditionally shutdown
+- name: shutdown
+  ansible.builtin.shell:
+    cmd: shutdown
+  when: shutdown
+  become: true

@@ -1,34 +1,46 @@
+# Rust
 - name: Get rustup script
   ansible.builtin.get_url:
     dest: /tmp/sh.rustup.rs
-    mode: '0755'
+    mode: '0700'
     url: https://sh.rustup.rs
+  register: down_rust
+  when: rust
 
 - name: Install rustup
   ansible.builtin.shell:
     cmd: /tmp/sh.rustup.rs -y
+  when: down_rust is not skipped
 
 - name: Remove rustup script
   ansible.builtin.file:
     dest: /tmp/sh.rustup.rs
     state: absent
+  when: down_rust is not skipped
 
-- name: Get codium.rpm
-  ansible.builtin.shell:
-    cmd: curl https://api.github.com/repos/VSCodium/vscodium/releases/latest | grep -iE '"browser_download_url\":.*x86_64.rpm"' | awk '{print $2}' | sed s/\"//g | xargs wget -O /tmp/codium.rpm
-  register: down_codium
-  when: codium
+# Go
+- name: Get go
+  ansible.builtin.get_url:
+    dest: /tmp/go.tar.gz
+    mode: '0600'
+    url: "https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz"
+  register: down_go
+  when: go
 
-- name: Install codium.rpm
-  ansible.builtin.dnf:
-    disable_gpg_check: true
-    name: /tmp/codium.rpm
-    state: present
-  become: true
-  when: down_codium is not skipped
-
-- name: Remove codium.rpm
+- name: Remove old go folder
   ansible.builtin.file:
-    path: /tmp/codium.rmp
+    dest: /usr/local/go
     state: absent
-  when: down_codium is not skipped
+  when: down_go is not skipped
+
+- name: Extract new go folder
+  ansible.builtin.unarchive:
+    dest: /usr/local
+    src: /tmp/go.tar.gz
+  when: down_go is not skipped
+
+- name: Remove go tar
+  ansible.builtin.file:
+    dest: /tmp/go.tar.gz
+    state: absent
+  when: down_go is not skipped

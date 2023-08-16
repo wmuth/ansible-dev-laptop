@@ -4,3 +4,45 @@
     path: /etc/bluetooth/main.conf
     regex: \#AutoEnable=true
   become: true
+  when: hardware
+
+- name: Stop power-profiles
+  ansible.builtin.systemd:
+    name: power-profiles.daemon
+    state: stopped
+  become: true
+  when: hardware
+
+- name: Disable power-profiles
+  ansible.builtin.systemd:
+    enabled: false
+    name: power-profiles.daemon
+  become: true
+  when: hardware
+
+- name: Mask power-profiles
+  ansible.builtin.systemd:
+    masked: true
+    name: power-profiles.daemon
+  become: true
+  when: hardware
+
+- name: Install TLP
+  ansible.builtin.package:
+    name:
+      - tlp
+      - tlp-rdw
+    state: latest
+  become: true
+
+- name: Enable TLP
+  ansible.builtin.systemd:
+    enabled: true
+    name: tlp
+  become: true
+  when: hardware
+
+- name: NVMe power saving
+  ansible.builtin.command: grubby --update-kernel=ALL --args="nvme.noacpi=1"
+  become: true
+  when: hardware

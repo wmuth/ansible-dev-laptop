@@ -3,4 +3,9 @@ calibre: false
 codium: false
 dotfiles: false
 font: false
+go: false
+go_version: 1.21.0
+hardware: false
 reboot: false
+rust: false
+shutdown: false
