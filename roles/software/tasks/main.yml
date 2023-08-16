@@ -55,7 +55,7 @@
 
 - name: Go install
   ansible.builtin.shell:
-    cmd: "go install {{ item }}"
+    cmd: "/usr/local/go/bin/go install {{ item }}"
   with_items:
     - github.com/jesseduffield/lazygit@latest
 
