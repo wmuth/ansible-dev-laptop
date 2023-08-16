@@ -41,6 +41,7 @@
   with_items:
     - alacritty
     - exa
+    - fd-find
     - ripgrep
     - tealdeer
     - zellij
