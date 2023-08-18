@@ -15,3 +15,4 @@ I have now been broken up into several smaller repos, of course including this o
 1. Clone this repository
 1. Change vars in host_vars/localhost
 1. `ansible-playbook --ask-become-pass run.yml`
+1. If you get stuck on "TASK [base : DNF parallel downloads]", you typed the become password incorrectly
