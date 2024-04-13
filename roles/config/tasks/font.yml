@@ -43,12 +43,13 @@
     state: absent
 
 - name: Refresh font cache
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: fc-cache -fv
   when: down_font is not skipped
+  changed_when: false
 
 - name: Set Fira Font
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:

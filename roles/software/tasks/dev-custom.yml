@@ -1,16 +1,33 @@
 # Rust
+- name: Is Rustup intalled
+  ansible.builtin.command:
+    cmd: "/home/{{ ansible_user_id }}/.cargo/bin/rustup --version"
+  register: rust_result
+  changed_when: false
+  failed_when: result.rc == 127
+  when: rust
+
+# If rustup installed
+- name: Rustup update
+  ansible.builtin.command:
+    cmd: "/home/{{ ansible_user_id }}/.cargo/bin/rustup update"
+  when: rust_result is succeeded and rust_result is not skipped
+  changed_when: false
+
+# Else
 - name: Get rustup script
   ansible.builtin.get_url:
     dest: /tmp/sh.rustup.rs
     mode: '0700'
     url: https://sh.rustup.rs
   register: down_rust
-  when: rust
+  when: rust_result is failed
 
 - name: Install rustup
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: /tmp/sh.rustup.rs -y
   when: down_rust is not skipped
+  changed_when: false
 
 - name: Remove rustup script
   ansible.builtin.file:
@@ -46,3 +63,29 @@
     dest: /tmp/go.tar.gz
     state: absent
   when: down_go is not skipped
+
+# Ocaml
+- name: Is Opam intalled
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/opam --version"
+  register: opam_result
+  changed_when: false
+  failed_when: result.rc == 127
+  when: ocaml
+
+# If opam installed
+- name: Opam update, upgrade
+  ansible.builtin.shell:
+    cmd: "/usr/local/bin/opam update -y && /usr/local/bin/opam upgrade -y"
+  when: opam_result is succeeded and opam_result is not skipped
+  changed_when: false
+
+# Else
+# Interactive script - can't execute here, put in home dir for manual use
+- name: Get opam
+  ansible.builtin.get_url:
+    dest: "/home/{{ ansible_user_id }}/install_opam.sh"
+    mode: '0700'
+    url: https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh
+  register: down_ocaml
+  when: opam_result is failed

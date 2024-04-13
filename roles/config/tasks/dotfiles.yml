@@ -1,0 +1,6 @@
+# Interactive process - clone to home dir
+- name: Clone dotfiles # noqa: latest
+  ansible.builtin.git:
+    dest: "/home/{{ ansible_user_id }}/dotfiles"
+    repo: https://github.com/wmuth/dotfiles.git
+  when: dotfiles

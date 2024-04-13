@@ -1,5 +1,6 @@
 # Run all roles on all hosts
-- hosts: all
+- name: "Run all roles"
+  hosts: all
   roles:
     - base
     - software

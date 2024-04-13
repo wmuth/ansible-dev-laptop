@@ -7,9 +7,10 @@
   when: calibre
 
 - name: Install calibre
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: /tmp/calibre.sh
   when: down_calibre is not skipped
+  changed_when: false
   become: true
 
 - name: Delete calibre script
@@ -17,3 +18,36 @@
     path: /tmp/calibre.sh
     state: absent
   when: down_calibre is not skipped
+
+- name: Clone keyd
+  ansible.builtin.git:
+    repo: https://github.com/rvaiya/keyd
+    dest: "/home/{{ ansible_user_id }}/keyd"
+    version: "release-{{ keyd_v }}"
+  register: down_keyd
+  when: keyd
+
+- name: Make keyd
+  community.general.make:
+    chdir: "/home/{{ ansible_user_id }}/keyd"
+  when: down_keyd is not skipped
+
+- name: Make install keyd
+  ansible.builtin.command:
+    cmd: "cd /home/{{ ansible_user_id }}/keyd; make install"
+  become: true
+  when: down_keyd is not skipped
+  changed_when: false
+
+- name: Enable keyd
+  ansible.builtin.systemd:
+    enabled: true
+    name: keyd
+  become: true
+  when: down_keyd is not skipped
+
+- name: Remove keyd dir
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user_id }}/keyd"
+    state: absent
+  when: down_keyd is not skipped

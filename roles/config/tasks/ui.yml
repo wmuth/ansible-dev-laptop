@@ -1,26 +1,26 @@
 - name: Correct theme
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/interface/gtk-theme"
     value: "'Adwaita-dark'"
 
 - name: Show battery percentage
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/interface/show-battery-percentage"
     value: "true"
 
 - name: Set night light settings
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
     - { key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled", value: "true" }
     - { key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic", value: "false" }
-    - { key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-from", value: "21.5" }
-    - { key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-to", value: "6" }
+    - { key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-from", value: "20" }
+    - { key: "/org/gnome/settings-daemon/plugins/color/night-light-schedule-to", value: "5" }
     - { key: "/org/gnome/settings-daemon/plugins/color/night-light-temperature", value: "1700" }
 
 - name: Show week number and week day
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
@@ -28,14 +28,14 @@
     - { key: "/org/gnome/desktop/interface/clock-show-weekday", value: "true" }
 
 - name: Prefer dark theme
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/interface/color-scheme"
     value: "'prefer-dark'"
 
 - name: Change background
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
-    - { key: "/org/gnome/desktop/background/picture-uri", value: "'file:///usr/share/backgrounds/gnome/blobs-l.svg'" }
     - { key: "/org/gnome/desktop/background/picture-uri-dark", value: "'file:///usr/share/backgrounds/gnome/blobs-d.svg'" }
+    - { key: "/org/gnome/desktop/background/picture-uri", value: "'file:///usr/share/backgrounds/gnome/blobs-l.svg'" }

@@ -4,19 +4,19 @@
   become: true
 
 - name: Flatpak autoremove
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: flatpak remove --unused --noninteractive --assumeyes
+  changed_when: false
 
-# Conditionally reboot
 - name: Reboot
-  ansible.builtin.shell:
-    cmd: reboot
+  ansible.builtin.reboot:
+    msg: "Rebooting machine in 60 seconds"
+    reboot_timeout: 60
   when: reboot
   become: true
 
-# Conditionally shutdown
-- name: shutdown
-  ansible.builtin.shell:
-    cmd: shutdown
+- name: Shutdown
+  community.general.shutdown:
+    delay: 60
   when: shutdown
   become: true

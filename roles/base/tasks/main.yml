@@ -1,41 +1,47 @@
-- name: DNF parallel downloads
-  ansible.builtin.lineinfile:
-    dest: /etc/dnf/dnf.conf
-    line: max_parallel_downloads=10
-  become: true
-
-- name: DNF update
-  ansible.builtin.package:
-    name: "*"
-    state: latest
-  become: true
-
-- name: Flatpak update
-  ansible.builtin.shell:
-    cmd: flatpak update --noninteractive --assumeyes
-  become: true
-
-# Remove to get to more basic state
-- name: Remove
+- name: Remove extras
   ansible.builtin.package:
     name:
-      - cheese
-      - gnome-boxes
+      - anaconda
+      - anaconda-install-env-deps
+      - anaconda-live
+      - baobab
+      - fpaste
+      - gnome-browser-connector
       - gnome-calendar
+      - gnome-classic-session-xsession
       - gnome-clocks
       - gnome-connections
       - gnome-contacts
       - gnome-help
       - gnome-maps
       - gnome-photos
-      - gnome-terminal
-      - gnome-text-editor
+      - gnome-remote-desktop
+      - gnome-shell-extension-background-logo
       - gnome-tour
       - gnome-weather
-      - mediawriter
+      - kdump-anaconda-addon
       - mediawriter
       - rhythmbox
+      - snapshot
       - totem
       - yelp
     state: absent
   become: true
+
+- name: DNF parallel downloads
+  ansible.builtin.lineinfile:
+    dest: /etc/dnf/dnf.conf
+    line: max_parallel_downloads=20
+  become: true
+
+- name: DNF update
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+    update_only: true
+  become: true
+
+- name: Flatpak update
+  ansible.builtin.command:
+    cmd: flatpak update --noninteractive --assumeyes
+  changed_when: false

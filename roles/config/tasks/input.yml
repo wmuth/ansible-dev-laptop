@@ -1,24 +1,11 @@
 - name: Create keybinding locations
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
-    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
-
-- name: Alacritty hotkey
-  ansible.builtin.dconf:
-    key: "{{ item.key }}"
-    value: "{{ item.value }}"
-  with_items:
-    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding", value: "'<Primary><Alt>t'" }
-    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command", value: "'alacritty'" }
-    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name", value: "'Alacritty'" }
-
-- name: Caps becomes ctrl
-  ansible.builtin.dconf:
-    key: "/org/gnome/desktop/input-sources/xkb-options"
-    value: "['lv3:ralt_switch', 'caps:ctrl_modifier']"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/',
+            '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
 
 - name: Nautilus hotkey
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
@@ -26,8 +13,24 @@
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'nautilus'" }
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name", value: "'Nautilus'" }
 
+- name: Alacritty hotkey
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding", value: "'<Primary><Alt>t'" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command", value: "'/home/{{ ansible_user_id }}/.cargo/bin/alacritty'" }
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name", value: "'Alacritty'" }
+  tags:
+    - demo
+
+- name: Right alt switching
+  community.general.dconf:
+    key: "/org/gnome/desktop/input-sources/xkb-options"
+    value: "['lv3:ralt_switch']"
+
 - name: Fix alt-tabbing
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
@@ -38,12 +41,12 @@
     - { key: "/org/gnome/shell/window-switcher/current-workspace-only", value: "false" }
 
 - name: Maximize hoykey
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "/org/gnome/desktop/wm/keybindings/maximize"
     value: "['<Super>Up']"
 
 - name: Printscreen hotkeys
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
@@ -51,7 +54,7 @@
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/area-screenshot", value: "['<Shift>Print']" }
 
 - name: Speed up key repeat delay and speed
-  ansible.builtin.dconf:
+  community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:

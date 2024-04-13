@@ -1,5 +1,5 @@
-- name: Change shell to ZSH
-  user:
+- name: Change shell to Fish
+  ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    shell: /usr/bin/zsh
+    shell: /usr/bin/fish
   become: true

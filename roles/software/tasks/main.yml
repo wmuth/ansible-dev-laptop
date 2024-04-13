@@ -2,32 +2,31 @@
 - name: Util install
   ansible.builtin.package:
     name:
-      - deja-dup
-      - fzf
-      - gnome-tweaks
+      - fish
       - neovim
-      - zsh
-    state: latest
+    state: present
   become: true
 
-- name: Group install
-  ansible.builtin.shell:
-    cmd: dnf group install --with-optional {{ item }} -y
-  with_items:
-    - "'C Development Tools and Libraries'"
-    - "'Development Libraries'"
-    - "'Virtualization'"
-  become: true
+- name: Ensure fish conf dir
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user_id }}/.config/fish/conf.d"
+    state: directory
+    mode: "0755"
 
 # Development
 - name: DNF dev install
   ansible.builtin.package:
     name:
+      - cmake
       - fontconfig-devel
       - freetype-devel
+      - g++
+      - gcc
       - libxcb-devel
       - libxkbcommon-devel
-    state: latest
+      - patch
+      - perl-FindBin
+    state: present
   become: true
 
 - name: Install custom development
@@ -36,30 +35,38 @@
 
 # Language managers
 - name: Cargo install
-  ansible.builtin.shell:
-    cmd: "~/.cargo/bin/cargo install {{ item }} --locked"
-  with_items:
-    - alacritty
-    - bat
-    - exa
-    - fd-find
-    - ripgrep
-    - tealdeer
-    - zellij
-    - zoxide
+  community.general.cargo:
+    name:
+      - alacritty
+      - exa
+      - ripgrep
+      - tealdeer
+      - zellij
+      - zoxide
+    state: latest
 
-- name: Pip install
-  ansible.builtin.shell:
-    cmd: "pip install -U {{ item }}"
-  with_items:
-    - neovim
-    - psutil
+- name: Pip update
+  ansible.builtin.pip:
+    name:
+      - neovim
+    state: forcereinstall
 
 - name: Go install
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "/usr/local/go/bin/go install {{ item }}"
+  changed_when: false
   with_items:
     - github.com/jesseduffield/lazygit@latest
+
+- name: Opam install
+  ansible.builtin.command:
+    cmd: "opam install {{ item }} -y"
+  changed_when: false
+  with_items:
+    - ocamlformat
+    - ocaml-lsp-server
+    - odoc
+    - utop
 
 # General programs
 - name: General install
@@ -69,19 +76,15 @@
       - chromium
       - keepassxc
       - libreoffice
-      - texmaker
       - tor
-      - yt-dlp
-    state: latest
+    state: present
   become: true
 
 - name: Flatpak install
-  ansible.builtin.flatpak:
+  community.general.flatpak:
     name:
       - com.bitwarden.desktop
-      - com.obsproject.Studio
       - net.mullvad.MullvadBrowser
-      - org.gimp.GIMP
     state: present
   become: true
 
