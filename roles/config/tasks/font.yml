@@ -3,8 +3,8 @@
     dest: /tmp/firamono.zip
     mode: '0644'
     url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/FiraMono.zip
-  when: font
   register: down_font
+  when: font
 
 - name: Make fonts dir
   ansible.builtin.file:
@@ -46,6 +46,7 @@
   ansible.builtin.command:
     cmd: fc-cache -fv
   when: down_font is not skipped
+  # TODO: Read stdout to see if any updates happened
   changed_when: false
 
 - name: Set Fira Font

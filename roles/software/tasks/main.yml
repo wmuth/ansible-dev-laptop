@@ -11,9 +11,9 @@
 
 - name: Ensure fish conf dir
   ansible.builtin.file:
+    mode: "0755"
     path: "/home/{{ ansible_user_id }}/.config/fish/conf.d"
     state: directory
-    mode: "0755"
 
 # Development
 - name: DNF dev install
@@ -52,16 +52,17 @@
       - zoxide
     state: latest
 
-- name: Pip update
+- name: Pip install
   ansible.builtin.pip:
     name:
       - neovim
       - psutil
-    state: forcereinstall
+    extra_args: --upgrade
 
 - name: Go install
   ansible.builtin.command:
     cmd: "/usr/local/go/bin/go install {{ item }}"
+  # TODO: Read stdout to see if any updates happened
   changed_when: false
   with_items:
     - github.com/jesseduffield/lazygit@latest
@@ -74,6 +75,7 @@
 - name: Opam install
   ansible.builtin.command:
     cmd: "opam install {{ item }} -y"
+  # TODO: Read stdout to see if any updates happened
   changed_when: false
   when: opam_result.stat.exists
   with_items:

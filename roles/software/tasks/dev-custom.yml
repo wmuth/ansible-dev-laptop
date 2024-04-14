@@ -9,7 +9,8 @@
 - name: Rustup update
   ansible.builtin.command:
     cmd: "/home/{{ ansible_user_id }}/.cargo/bin/rustup update"
-  changed_when: false
+  changed_when: "'updated' in rustup_update.stdout"
+  register: rustup_update
   when:
     - rust_result.stat is defined
     - rust_result.stat.exists
@@ -28,8 +29,9 @@
 - name: Install rustup
   ansible.builtin.command:
     cmd: /tmp/sh.rustup.rs -y
-  when: down_rust is not skipped
+  # TODO: Read stdout to see if any updates happened
   changed_when: false
+  when: down_rust is not skipped
 
 - name: Remove rustup script
   ansible.builtin.file:
@@ -50,15 +52,15 @@
   ansible.builtin.file:
     dest: /usr/local/go
     state: absent
-  when: down_go is not skipped
   become: true
+  when: down_go is not skipped
 
 - name: Extract new go folder
   ansible.builtin.unarchive:
     dest: /usr/local
     src: /tmp/go.tar.gz
-  when: down_go is not skipped
   become: true
+  when: down_go is not skipped
 
 - name: Remove go tar
   ansible.builtin.file:
@@ -77,6 +79,7 @@
 - name: Opam update, upgrade
   ansible.builtin.shell:
     cmd: "/usr/local/bin/opam update -y && /usr/local/bin/opam upgrade -y"
+  # TODO: Read stdout to see if any updates happened
   changed_when: false
   when:
     - opam_result.stat is defined

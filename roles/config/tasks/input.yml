@@ -21,8 +21,6 @@
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding", value: "'<Primary><Alt>t'" }
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command", value: "'/home/{{ ansible_user_id }}/.cargo/bin/alacritty'" }
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name", value: "'Alacritty'" }
-  tags:
-    - demo
 
 - name: Right alt switching
   community.general.dconf:

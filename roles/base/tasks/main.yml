@@ -44,4 +44,5 @@
 - name: Flatpak update
   ansible.builtin.command:
     cmd: flatpak update --noninteractive --assumeyes
-  changed_when: false
+  changed_when: "'app/' in flatpak_update_result.stdout"
+  register: flatpak_update_result
