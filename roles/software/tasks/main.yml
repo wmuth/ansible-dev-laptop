@@ -4,6 +4,8 @@
     name:
       - fish
       - neovim
+      - openssl
+      - pip
     state: present
   become: true
 
@@ -25,7 +27,10 @@
       - libxcb-devel
       - libxkbcommon-devel
       - patch
+      - perl-File-Compare
+      - perl-File-Copy
       - perl-FindBin
+      - perl-IPC-Cmd
     state: present
   become: true
 
@@ -36,8 +41,10 @@
 # Language managers
 - name: Cargo install
   community.general.cargo:
+    executable: "/home/{{ ansible_user_id }}/.cargo/bin/cargo"
     name:
       - alacritty
+      - bat
       - exa
       - ripgrep
       - tealdeer
@@ -49,6 +56,7 @@
   ansible.builtin.pip:
     name:
       - neovim
+      - psutil
     state: forcereinstall
 
 - name: Go install
@@ -58,10 +66,16 @@
   with_items:
     - github.com/jesseduffield/lazygit@latest
 
+- name: Is Opam installed
+  ansible.builtin.stat:
+    path: "/usr/local/bin/opam"
+  register: opam_result
+
 - name: Opam install
   ansible.builtin.command:
     cmd: "opam install {{ item }} -y"
   changed_when: false
+  when: opam_result.stat.exists
   with_items:
     - ocamlformat
     - ocaml-lsp-server

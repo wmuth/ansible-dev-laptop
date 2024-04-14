@@ -23,7 +23,7 @@
   ansible.builtin.git:
     repo: https://github.com/rvaiya/keyd
     dest: "/home/{{ ansible_user_id }}/keyd"
-    version: "release-{{ keyd_v }}"
+    version: "{{ keyd_v }}"
   register: down_keyd
   when: keyd
 
@@ -33,8 +33,9 @@
   when: down_keyd is not skipped
 
 - name: Make install keyd
-  ansible.builtin.command:
-    cmd: "cd /home/{{ ansible_user_id }}/keyd; make install"
+  community.general.make:
+    chdir: "/home/{{ ansible_user_id }}/keyd"
+    target: install
   become: true
   when: down_keyd is not skipped
   changed_when: false

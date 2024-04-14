@@ -9,14 +9,15 @@
   changed_when: false
 
 - name: Reboot
-  ansible.builtin.reboot:
-    msg: "Rebooting machine in 60 seconds"
-    reboot_timeout: 60
+  ansible.builtin.command:
+    cmd: shutdown -r +1 "Rebooting in 60 seconds"
   when: reboot
+  changed_when: false
   become: true
 
 - name: Shutdown
-  community.general.shutdown:
-    delay: 60
+  ansible.builtin.command:
+    cmd: shutdown +1 "Shutting down in 60 seconds"
   when: shutdown
+  changed_when: false
   become: true
