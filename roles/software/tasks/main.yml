@@ -100,6 +100,8 @@
   community.general.flatpak:
     name:
       - com.bitwarden.desktop
+      - com.brave.Browser
+      - com.spotify.Client
       - net.mullvad.MullvadBrowser
     state: present
   become: true
