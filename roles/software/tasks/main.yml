@@ -80,8 +80,7 @@
   changed_when: false
   when: opam_result.stat.exists
   with_items:
-    - ocamlformat
-    - ocaml-lsp-server
+    - base
     - odoc
     - utop
 
