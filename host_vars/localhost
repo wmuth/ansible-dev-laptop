@@ -3,11 +3,11 @@ calibre: false
 dotfiles: false
 font: false
 go: false
-go_version: 1.22.3
+go_version: 1.23.4
 hardware: false
 keyd: false
 keyd_v: v2.4.3
-ocaml: false
+ocaml: true
 reboot: false
-rust: false
+rust: true
 shutdown: false
