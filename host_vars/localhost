@@ -3,10 +3,10 @@ calibre: false
 dotfiles: false
 font: false
 go: false
-go_version: 1.23.4
+go_version: 1.23.5
 hardware: false
 keyd: false
-keyd_v: v2.4.3
+keyd_v: v2.5.0
 ocaml: true
 reboot: false
 rust: true
