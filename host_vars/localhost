@@ -3,7 +3,7 @@ calibre: false
 dotfiles: false
 font: false
 go: false
-go_version: 1.23.6
+go_version: 1.24.1
 hardware: false
 keyd: false
 keyd_v: v2.5.0
